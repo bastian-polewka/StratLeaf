@@ -1,8 +1,73 @@
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="leftFragment">
     <h3>Left Menu</h3>
-    <ul>
-        <li><a href="#">Item 1</a></li>
-        <li><a href="#">Item 2</a></li>
-        <li><a href="#">Item 3</a></li>
-    </ul>
+
+    <div class="btn-group" role="group" aria-label="Drawing tool state">
+        <input type="radio" class="btn-check" name="btnRadio" id="btnRadioMove" autocomplete="off" checked>
+        <label class="btn btn-outline-primary" for="btnRadioMove">Move</label>
+
+        <input type="radio" class="btn-check" name="btnRadio" id="btnRadioDraw" autocomplete="off">
+        <label class="btn btn-outline-primary" for="btnRadioDraw">Draw</label>
+
+        <input type="radio" class="btn-check" name="btnRadio" id="btnRadioErase" autocomplete="off">
+        <label class="btn btn-outline-primary" for="btnRadioErase">Erase</label>
+    </div>
+
+    <!-- Drawing options -->
+    <div class="container mt-3">
+
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sliderDropdownDrawing" aria-expanded="false" aria-controls="sliderDropdown">
+            Draw Options
+        </button>
+
+        <div class="collapse slider-collapse mt-3" id="sliderDropdownDrawing">
+            <div class="color-indicator" id="colorIndicator" style="--circle-color: white;"></div>
+
+            <!-- Red Slider -->
+            <div class="slider-container" style="display: flex; align-items: center; gap: 10px;">
+                <span style="width: 80px;">Red</span>
+                <input type="number" id="redNumber" class="form-control" min="0" max="255" value="255" style="width: 70px;">
+                <input type="range" id="redRange" class="form-range" min="0" max="255" value="255" style="flex: 1;">
+            </div>
+
+            <!-- Green Slider -->
+            <div class="slider-container" style="display: flex; align-items: center; gap: 10px;">
+                <span style="width: 80px;">Green</span>
+                <input type="number" id="greenNumber" class="form-control" min="0" max="255" value="255" style="width: 70px;">
+                <input type="range" id="greenRange" class="form-range" min="0" max="255" value="255" style="flex: 1;">
+            </div>
+
+            <!-- Blue Slider -->
+            <div class="slider-container" style="display: flex; align-items: center; gap: 10px;">
+                <span style="width: 80px;">Blue</span>
+                <input type="number" id="blueNumber" class="form-control" min="0" max="255" value="255" style="width: 70px;">
+                <input type="range" id="blueRange" class="form-range" min="0" max="255" value="255" style="flex: 1;">
+            </div>
+
+            <!-- Line Width -->
+            <div class="slider-container" style="display: flex; align-items: center; gap: 10px;">
+                <span style="width: 80px;">Size</span>
+                <input type="number" id="lineWidthNumber" class="form-control" min="1" max="20" value="2" style="width: 70px;">
+                <input type="range" id="lineWidthRange" class="form-range" min="1" max="20" value="2" style="flex: 1;">
+            </div>
+
+            <!-- Line Opacity -->
+            <div class="slider-container" style="display: flex; align-items: center; gap: 10px;">
+                <span style="width: 80px;">Opacity</span>
+                <input type="number" id="lineOpacityNumber" class="form-control" min="0" max="100" value="100" style="width: 70px;">
+                <input type="range" id="lineOpacityRange" class="form-range" min="0" max="100" value="100" style="flex: 1;">
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/drawingTool.js}" defer></script>
+
+    <div class="container mt-3">
+
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sliderDropdown" aria-expanded="false" aria-controls="sliderDropdown">
+            Objects
+        </button>
+
+    </div>
+
+
 </div>
