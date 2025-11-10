@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${pageTitle}">StratLeaf</title>
+    <link rel="stylesheet" th:href="@{/css/layout.css}">
+</head>
+<body>
+
+<!-- Header -->
+<div th:replace="fragments/header :: headerFragment"></div>
+
+<!-- Main container -->
+<div class="container">
+    <div class="left" th:replace="fragments/left :: leftFragment"></div>
+    <div class="map" th:replace="fragments/map :: mapFragment"></div>
+    <div class="right" th:replace="fragments/right :: rightFragment"></div>
+</div>
+
+<!-- Footer -->
+<div th:replace="fragments/footer :: footerFragment"></div>
+
+</body>
+</html>

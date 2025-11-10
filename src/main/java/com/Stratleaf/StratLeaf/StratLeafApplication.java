@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class StratLeafApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(StratLeafApplication.class, args);
+        SpringApplication.run(StratLeafApplication.class, args);
 	}
 
 }
