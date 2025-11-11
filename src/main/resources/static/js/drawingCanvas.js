@@ -4,10 +4,13 @@ canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
 
 // Drawing
-let mode = "move"; // "draw" | "erase" | "move"
+let mode = "move"; // "draw" | "erase" | "move" | "drag"
 let drawing = false;
 let currentStroke = [];
 const strokes = [];
+const undoneStrokes = [];
+const objects = [];
+let selectedObject = null;
 
 // Translation and Zoom
 let offsetX = 0;
@@ -24,6 +27,28 @@ canvas.addEventListener("mousedown", e => {
     } else if (mode === "draw" || mode === "erase") {
         drawing = true;
         currentStroke = [{ x: (e.offsetX - offsetX) / scale, y: (e.offsetY - offsetY) / scale }];
+    } else if (mode === "drag") {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        // Check objects from top to bottom (last drawn = top)
+        for (let i = objects.length - 1; i >= 0; i--) {
+            const obj = objects[i];
+            if (
+                mouseX > obj.x &&
+                mouseX < obj.x + obj.width &&
+                mouseY > obj.y &&
+                mouseY < obj.y + obj.height
+            ) {
+                selectedObject = obj;
+                offsetX = mouseX - obj.x;
+                offsetY = mouseY - obj.y;
+                objects.splice(i, 1);
+                objects.push(obj);
+                break;
+            }
+        }
     }
 });
 
@@ -34,14 +59,30 @@ canvas.addEventListener("mousemove", e => {
         redrawCanvas();
     } else if (drawing && (mode === "draw" || mode === "erase")) {
         const point = { x: (e.offsetX - offsetX) / scale, y: (e.offsetY - offsetY) / scale };
+
         if (mode === "erase") {
             eraseAtPoint(point);
         } else {
             currentStroke.push(point);
-            drawStrokeSegment(currentStroke[currentStroke.length - 2], point, lineColor, lineWidth);
+            redrawCanvas();
+            for (let i = 1; i < currentStroke.length; i++) {
+                drawStrokeSegment(currentStroke[i - 1], currentStroke[i], lineColor, lineWidth);
+            }
         }
+    } else if (mode === "drag") {
+        if (!selectedObject) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        selectedObject.x = mouseX - offsetX;
+        selectedObject.y = mouseY - offsetY;
+
+        redrawCanvas();
     }
 });
+
 
 canvas.addEventListener("mouseup", () => {
     if (drawing && mode === "draw") {
@@ -49,6 +90,7 @@ canvas.addEventListener("mouseup", () => {
     }
     drawing = false;
     isPanning = false;
+    selectedObject = null;
 });
 
 canvas.addEventListener("wheel", e => {
@@ -73,7 +115,6 @@ canvas.addEventListener("wheel", e => {
 });
 
 
-
 function drawStrokeSegment(p1, p2, color, width) {
     ctx.strokeStyle = color;
     ctx.lineWidth = width;
@@ -82,6 +123,7 @@ function drawStrokeSegment(p1, p2, color, width) {
     ctx.lineTo(p2.x, p2.y);
     ctx.stroke();
 }
+
 
 
 function eraseAtPoint(point) {
@@ -110,6 +152,10 @@ function redrawCanvas() {
             drawStrokeSegment(stroke.points[i - 1], stroke.points[i], stroke.color, stroke.width);
         }
     }
+
+    objects.forEach(obj => {
+        ctx.drawImage(obj.image, obj.x, obj.y, obj.width, obj.height);
+    });
 }
 
 function distance(p1, p2) {
@@ -133,6 +179,10 @@ toolRadios.forEach(radio => {
             mode = "move";
             console.log("Mode: MOVE");
         }
+        else if (radio.id === "btnRadioDrag") {
+            mode = "drag";
+            console.log("Mode: DRAG");
+        }
     });
 });
 
@@ -144,7 +194,81 @@ bgImage.onload = () => {
     redrawCanvas();
 };
 
-//TODO: Limit Move
+
+// Undo & Redo TODO: undo erased lines
+const buttonUndo = document.getElementById("btnUndo");
+const buttonRedo = document.getElementById("btnRedo");
+
+buttonUndo.addEventListener("click", function() {
+    undoneStrokes.push(strokes.pop());
+    redrawCanvas();
+});
+
+buttonRedo.addEventListener("click", function() {
+    if (undoneStrokes.length > 0) {
+        strokes.push(undoneStrokes.pop());
+        redrawCanvas();
+    }
+});
+
+
+const buttonFlashbang = document.getElementById("btnFlashbang");
+const flashbangIcon = new Image();
+flashbangIcon.src = "/images/icons/flashbang.svg";
+
+flashbangIcon.onload = () => {
+    buttonFlashbang.addEventListener("click", function() {
+        objects.push({
+            image: flashbangIcon,
+            x: 200,
+            y: 50,
+            width: 400,
+            height: 400
+        });
+        redrawCanvas();
+    });
+};
+
+
+
+
+
+/* //Custom cursor
+canvas.style.cursor = 'none';
+let mouse = { x: 0, y: 0, inside: false };
+
+// track mouse
+canvas.addEventListener('mousemove', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  mouse.x = e.clientX - rect.left;
+  mouse.y = e.clientY - rect.top;
+  mouse.inside = true;
+});
+
+canvas.addEventListener('mouseleave', () => mouse.inside = false);
+canvas.addEventListener('mouseenter', () => mouse.inside = true);
+
+function drawCursor(x, y) {
+  ctx.beginPath();
+  ctx.arc(x, y, 10, 0, Math.PI * 2);  // circle radius = 10
+  ctx.fillStyle = 'rgba(255,0,0,0.6)'; // red color with some transparency
+  ctx.fill();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = 'black'; // optional outline
+}
+
+function draw() {
+  redrawCanvas();
+  if (mouse.inside) drawCursor(mouse.x, mouse.y);
+
+  requestAnimationFrame(draw);
+}
+
+draw();
+*/
+
+//TODO: Canvas moves while dragging
+//TODO: Limit Move, Zoom
 //TODO: Add Undo / Redo
 //TODO: Add Stroke smoothing
 //TODO: Opacity

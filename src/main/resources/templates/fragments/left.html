@@ -10,12 +10,22 @@
 
         <input type="radio" class="btn-check" name="btnRadio" id="btnRadioErase" autocomplete="off">
         <label class="btn btn-outline-primary" for="btnRadioErase">Erase</label>
+
+        <input type="radio" class="btn-check" name="btnRadio" id="btnRadioDrag" autocomplete="off">
+        <label class="btn btn-outline-primary" for="btnRadioDrag">Drag</label>
     </div>
+
+    <div class="container mt-3">
+        <button type="button" class="btn btn-primary btn-sm" id="btnUndo">Undo</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btnRedo">Redo</button>
+    </div>
+
 
     <!-- Drawing options -->
     <div class="container mt-3">
 
-        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sliderDropdownDrawing" aria-expanded="false" aria-controls="sliderDropdown">
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sliderDropdownDrawing"
+                aria-expanded="false" aria-controls="sliderDropdown">
             Draw Options
         </button>
 
@@ -61,11 +71,18 @@
 
     <script th:src="@{/js/drawingTool.js}" defer></script>
 
+    <!-- Objects -->
     <div class="container mt-3">
-
-        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sliderDropdown" aria-expanded="false" aria-controls="sliderDropdown">
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#sliderDropdownObjects"
+                aria-expanded="false" aria-controls="sliderDropdown">
             Objects
         </button>
+
+        <div class="collapse slider-collapse mt-3" id="sliderDropdownObjects">
+            <button class="btn btn-outline-secondary rounded-3 p-2" style="width:52px; height:52px;" id="btnFlashbang">
+                <img src="/images/icons/flashbang.svg" alt="" width="40" height="40">
+            </button>
+        </div>
 
     </div>
 
