@@ -1,0 +1,23 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="stratsTableFragment" class="stratsTable">
+    <table class="table table-dark table-hover">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>First</th>
+            <th>Last</th>
+            <th>Handle</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="strat : ${STRATS}">
+            <th th:text="${strat.id}"></th>
+            <td th:text="${strat.type}"></td>
+            <td th:text="${strat.name}"></td>
+            <td th:text="${strat.player}"></td>
+            <td th:text="${strat.description}"></td>
+            <td th:text="${strat.notes}"></td>
+            <td th:text="${strat.status}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

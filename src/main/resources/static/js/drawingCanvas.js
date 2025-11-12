@@ -275,5 +275,7 @@ draw();
 //TODO: Line Type, for example dashed
 //TODO: Add text
 //TODO: Add Nades
+//TODO: color options for website, darkmoode etc.
+//TODO: demo mode,show what is possible with the website
 
 

@@ -17,5 +17,10 @@ public class TestController {
         return "layout";
     }
 
-
+    @GetMapping("/strats")
+    public String strats(Model model) {
+        model.addAttribute("pageTitle", "StratLeaf");
+        model.addAttribute("pageContent", "home :: content");
+        return "strats";
+    }
 }
