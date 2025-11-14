@@ -1,10 +1,6 @@
 package com.Stratleaf.StratLeaf;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 
 @Entity
@@ -16,11 +12,14 @@ public class Strat {
 
     private String type;
     private String name;
+    @Embedded
     private Player player;
     private String description;
     private String notes;
-    private boolean status;
-    //private enum side;
+    @Enumerated(EnumType.STRING)
+    private Status status;
+    @Enumerated(EnumType.STRING)
+    private Side side;
 
     // Default constructor (required by JPA)
     public Strat() {}
@@ -77,12 +76,20 @@ public class Strat {
         this.notes = notes;
     }
 
-    public boolean isStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Side getSide() {
+        return side;
+    }
+
+    public void setSide(Side side) {
+        this.side = side;
     }
 
 
