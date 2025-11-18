@@ -1,8 +1,20 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="stratsTableFragment" class="stratsTable">
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="stratsTableFragment">
     <table class="table table-dark table-hover">
+        <colgroup>
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+            <col style="width: 10%;">
+            <col style="width: 10%;">
+            <col style="width: 10%;">
+            <col style="width: 10%;">
+            <col style="width: 10%;">
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+            <col style="width: 3%;">
+        </colgroup>
         <thead>
         <tr>
-            <th>ID</th>
             <th>Type</th>
             <th>Name</th>
             <th>Player1</th>
@@ -18,6 +30,29 @@
         </thead>
 
         <tbody>
+        <tr th:each="strat : ${STRATS}" th:data-strat-id="${strat.id}" class="editable-row">
+
+            <td><input class="form-control" name="type" th:value="${strat.type}"></td>
+            <td><input class="form-control" name="name" th:value="${strat.name}"></td>
+            <td th:text="${strat.player != null ? strat.player.name : 'N/A'}"></td>
+            <td th:text="${strat.player != null ? strat.player.name : 'N/A'}"></td>
+            <td th:text="${strat.player != null ? strat.player.name : 'N/A'}"></td>
+            <td th:text="${strat.player != null ? strat.player.name : 'N/A'}"></td>
+            <td th:text="${strat.player != null ? strat.player.name : 'N/A'}"></td>
+            <td><input class="form-control" name="description" th:value="${strat.description}"></td>
+            <td><input class="form-control" name="notes" th:value="${strat.notes}"></td>
+            <td><input class="form-control" name="status" th:value="${strat.status}"></td>
+            <td><input class="form-control" name="side" th:value="${strat.side}"></td>
+        </tr>
+        <!--
+        <td>
+                <select class="form-control" name="side">
+                <option value="CT" th:selected="${strat.side.name() == 'CT'}">CT</option>
+                <option value="T" th:selected="${strat.side.name() == 'T'}">T</option>
+                </select>
+            </td>
+
+
         <tr th:each="strat : ${STRATS}">
             <th th:text="${strat.id}"></th>
             <td th:text="${strat.type}"></td>
@@ -32,6 +67,11 @@
             <td th:text="${strat.status}"></td>
             <td th:text="${strat.side}"></td>
         </tr>
+        -->
+
         </tbody>
     </table>
+    <script th:src="@{/js/table.js}" defer></script>
 </div>
+
+

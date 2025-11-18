@@ -1,0 +1,52 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const editableInputs = document.querySelectorAll('.editable-row input.form-control');
+
+    editableInputs.forEach(input => {
+        input.addEventListener('change', (event) => {
+            const changedInput = event.target;
+            const row = changedInput.closest('tr');
+
+            // 1. Get the Strategy ID from the row's data attribute
+            const stratId = row.dataset.stratId;
+
+            if (!stratId) {
+                console.error("Could not find strat ID on the row.");
+                return;
+            }
+
+            if (changedInput.value.trim() === '') {
+                console.warn(`Cannot submit empty field for strat ID: ${stratId}.`);
+                return;
+            }
+
+            // 2. Package the data for submission (only the ID and the changed field)
+            const data = {
+                id: stratId,
+                [changedInput.name]: changedInput.value
+            };
+
+            console.log(`Sending AJAX update for ID: ${stratId}. Field: ${changedInput.name}`);
+
+            // 3. Use the Fetch API to send the data asynchronously
+            fetch('/update-strat', {
+                method: 'POST', // maybe change to PUT
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add CSRF token header here if your framework requires it (e.g., Spring Security)
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                // TODO: If successful, you might update the row visually (e.g., flash a green color)
+                console.log(`Update successful for ID: ${stratId}`);
+            })
+            .catch(error => {
+                console.error('Update failed:', error);
+                // TODO: Handle error (e.g., revert the input value or show a message)
+            });
+        });
+    });
+});

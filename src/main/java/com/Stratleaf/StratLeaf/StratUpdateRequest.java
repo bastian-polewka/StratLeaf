@@ -1,35 +1,17 @@
 package com.Stratleaf.StratLeaf;
 
-import jakarta.persistence.*;
+public class StratUpdateRequest {
 
-
-@Entity
-@Table(name = "STRATS")
-public class Strat {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String type;
     private String name;
-    @ManyToOne
-    @JoinColumn(name = "player_id")
-    private Player player;
+    private Integer playerId;
     private String description;
     private String notes;
-    @Enumerated(EnumType.STRING)
     private Status status;
-    @Enumerated(EnumType.STRING)
     private Side side;
-    @Enumerated(EnumType.STRING)
     private CSMap map;
 
-    // Default constructor (required by JPA)
-    public Strat() {}
-
-    public Strat(String name) {
-        this.name = name;
-    }
 
     public Integer getId() {
         return id;
@@ -55,12 +37,12 @@ public class Strat {
         this.name = name;
     }
 
-    public Player getPlayer() {
-        return player;
+    public Integer getPlayerId() {
+        return playerId;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setPlayerId(Integer playerId) {
+        this.playerId = playerId;
     }
 
     public String getDescription() {
