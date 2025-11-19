@@ -11,7 +11,7 @@
             <col style="width: 5%;">
             <col style="width: 5%;">
             <col style="width: 5%;">
-            <col style="width: 3%;">
+            <col style="width: 5%;">
         </colgroup>
         <thead>
         <tr>
@@ -41,16 +41,24 @@
             <td th:text="${strat.player != null ? strat.player.name : 'N/A'}"></td>
             <td><input class="form-control" name="description" th:value="${strat.description}"></td>
             <td><input class="form-control" name="notes" th:value="${strat.notes}"></td>
-            <td><input class="form-control" name="status" th:value="${strat.status}"></td>
-            <td><input class="form-control" name="side" th:value="${strat.side}"></td>
-        </tr>
-        <!--
-        <td>
-                <select class="form-control" name="side">
-                <option value="CT" th:selected="${strat.side.name() == 'CT'}">CT</option>
-                <option value="T" th:selected="${strat.side.name() == 'T'}">T</option>
+            <td>
+                <select class="form-select" name="status" aria-label="Status selection" selected th:value="${strat.status}">
+                    <option value="Ready">Ready</option>
+                    <option value="NotReady">Not Ready</option>
+                    <option value="None">None</option>
                 </select>
             </td>
+            <td>
+                <select class="form-select" name="side" aria-label="Side selection" selected th:value="${strat.side}">
+                    <option value="CT">CT</option>
+                    <option value="T">T</option>
+                    <option value="None">None</option>
+                </select>
+            </td>
+        </tr>
+        <!--
+
+
 
 
         <tr th:each="strat : ${STRATS}">

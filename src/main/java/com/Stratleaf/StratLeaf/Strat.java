@@ -102,4 +102,19 @@ public class Strat {
     public void setMap(CSMap map) {
         this.map = map;
     }
+
+    @Override
+    public String toString() {
+        return "Strat{" +
+                "id=" + id +
+                ", type='" + type + '\'' +
+                ", name='" + name + '\'' +
+                ", player=" + (player != null ? player.getId() : null) +
+                ", description='" + description + '\'' +
+                ", notes='" + notes + '\'' +
+                ", status=" + status +
+                ", side=" + side +
+                ", map=" + map +
+                '}';
+    }
 }

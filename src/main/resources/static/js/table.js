@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const editableInputs = document.querySelectorAll('.editable-row input.form-control');
+    const editableInputs = document.querySelectorAll('.editable-row');
 
     editableInputs.forEach(input => {
         input.addEventListener('change', (event) => {
@@ -8,6 +8,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 1. Get the Strategy ID from the row's data attribute
             const stratId = row.dataset.stratId;
+
+
+            // TODO: Change so only one element is changed
+            let stratData = {};
+            row.querySelectorAll('td').forEach(cell => {
+                const input = cell.querySelector('input, select');
+                if (input) {
+                    stratData[input.name] = input.value;
+                } else {
+                    stratData[cell.dataset.field] = cell.textContent.trim();
+                }
+            });
+
+            console.log(stratData);
 
             if (!stratId) {
                 console.error("Could not find strat ID on the row.");
@@ -22,10 +36,18 @@ document.addEventListener('DOMContentLoaded', () => {
             // 2. Package the data for submission (only the ID and the changed field)
             const data = {
                 id: stratId,
-                [changedInput.name]: changedInput.value
+                type: stratData.type,
+                name: stratData.name,
+                description: stratData.description,
+                notes: stratData.notes,
+                status: stratData.status,
+                side: stratData.side,
+                //[changedInput.name]: changedInput.value
             };
 
             console.log(`Sending AJAX update for ID: ${stratId}. Field: ${changedInput.name}`);
+
+            console.log(data);
 
             // 3. Use the Fetch API to send the data asynchronously
             fetch('/update-strat', {

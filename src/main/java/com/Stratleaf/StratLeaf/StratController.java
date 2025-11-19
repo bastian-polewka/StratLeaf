@@ -45,6 +45,9 @@ public class StratController {
         strat.setSide(request.getSide());
         strat.setMap(request.getMap());
 
+        System.out.println("hey: " + strat.toString());
+        System.out.println("hey2: " + request.toString());
+
         // PLAYER RELATION
         if (request.getPlayerId() == null) {
             strat.setPlayer(null);
