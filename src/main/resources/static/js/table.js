@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const stratId = row.dataset.stratId;
 
 
-            // TODO: Change so only one element is changed
+            // TODO: Change so only one element is changed instead of whole row
             let stratData = {};
             row.querySelectorAll('td').forEach(cell => {
                 const input = cell.querySelector('input, select');
@@ -20,8 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     stratData[cell.dataset.field] = cell.textContent.trim();
                 }
             });
-
-            console.log(stratData);
 
             if (!stratId) {
                 console.error("Could not find strat ID on the row.");
@@ -33,6 +31,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            const players = Array.from(document.querySelectorAll('input[name="player"]'))
+                .map(nameInput => ({
+                    name: nameInput.value,
+                    active: true
+                }));
+
+            const roleDescriptions = Array.from(row.querySelectorAll('input[name="roleDescriptions"]'))
+                .map(nameInput => nameInput.value);
+
+
             // 2. Package the data for submission (only the ID and the changed field)
             const data = {
                 id: stratId,
@@ -42,6 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 notes: stratData.notes,
                 status: stratData.status,
                 side: stratData.side,
+                players: players,
+                roleDescriptions: roleDescriptions
                 //[changedInput.name]: changedInput.value
             };
 

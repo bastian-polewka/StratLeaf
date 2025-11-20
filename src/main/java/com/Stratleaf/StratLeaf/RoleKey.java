@@ -16,11 +16,4 @@ public class RoleKey implements Serializable {
     @Column(name = "player_id")
     private Integer playerID;
 
-    public void setStratID(Integer stratID) {
-        this.stratID = stratID;
-    }
-
-    public void setPlayerID(Integer playerID) {
-        this.playerID = playerID;
-    }
 }

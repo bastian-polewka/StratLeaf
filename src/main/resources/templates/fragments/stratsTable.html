@@ -17,11 +17,11 @@
         <tr>
             <th>Type</th>
             <th>Name</th>
-            <th>Player1</th>
-            <th>Player2</th>
-            <th>Player3</th>
-            <th>Player4</th>
-            <th>Player5</th>
+            <td><input class="form-control" name="player" th:value="${ACTIVE_PLAYERS.size() > 0 ? ACTIVE_PLAYERS.get(0).name : 'N/A'}"></td>
+            <td><input class="form-control" name="player" th:value="${ACTIVE_PLAYERS.size() > 1 ? ACTIVE_PLAYERS.get(1).name : 'N/A'}"></td>
+            <td><input class="form-control" name="player" th:value="${ACTIVE_PLAYERS.size() > 2 ? ACTIVE_PLAYERS.get(2).name : 'N/A'}"></td>
+            <td><input class="form-control" name="player" th:value="${ACTIVE_PLAYERS.size() > 3 ? ACTIVE_PLAYERS.get(3).name : 'N/A'}"></td>
+            <td><input class="form-control" name="player" th:value="${ACTIVE_PLAYERS.size() > 4 ? ACTIVE_PLAYERS.get(4).name : 'N/A'}"></td>
             <th>Description</th>
             <th>Notes</th>
             <th>Status</th>
@@ -34,11 +34,12 @@
 
             <td><input class="form-control" name="type" th:value="${strat.type}"></td>
             <td><input class="form-control" name="name" th:value="${strat.name}"></td>
-            <td th:text="${strat.player != null ? strat.player.name : 'N/A'}"></td>
-            <td th:text="${strat.player != null ? strat.player.name : 'N/A'}"></td>
-            <td th:text="${strat.player != null ? strat.player.name : 'N/A'}"></td>
-            <td th:text="${strat.player != null ? strat.player.name : 'N/A'}"></td>
-            <td th:text="${strat.player != null ? strat.player.name : 'N/A'}"></td>
+
+            <td th:each="player,iterStat : ${ACTIVE_PLAYERS}">
+                <input class="form-control" name="roleDescriptions"
+                       th:value="${#lists.isEmpty(strat.roles.?[player.id == player.id]) ?
+                        'N/A': strat.roles.?[player.id == player.id][0].roleDescription}"></td>
+
             <td><input class="form-control" name="description" th:value="${strat.description}"></td>
             <td><input class="form-control" name="notes" th:value="${strat.notes}"></td>
             <td>
