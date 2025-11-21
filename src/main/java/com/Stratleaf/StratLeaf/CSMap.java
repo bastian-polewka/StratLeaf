@@ -1,19 +1,19 @@
 package com.Stratleaf.StratLeaf;
 
 public enum CSMap {
-    Agency,
+    //Agency,
     Ancient,
     Anubis,
-    Baggage,
+    //Baggage,
     Dust2,
     Inferno,
-    Italy,
+    //Italy,
     Mirage,
     Nuke,
-    Office,
+    //Office,
     Overpass,
-    Shoots,
+    //Shoots,
     Train,
     Vertigo,
-    Custom
+    //Custom
 }

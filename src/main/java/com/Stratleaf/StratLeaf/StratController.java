@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class StratController {
@@ -28,8 +27,10 @@ public class StratController {
     }
 
     @GetMapping("/strats")
-    public String showStrats(Model model) {
-        model.addAttribute("STRATS", stratRepository.findAll());
+    public String showStrats(Model model, @RequestParam(name = "mapSelector", required = false) CSMap selectedMap) {
+        model.addAttribute("STRATS", stratRepository.findByMap(selectedMap));
+        System.out.println(selectedMap);
+
         List<Player> activePlayers = playerRepository.findAll()
                 .stream()
                 .filter(Player::isActive)
@@ -123,4 +124,11 @@ public class StratController {
 
         return ResponseEntity.ok().build();
     }
+
+
+    @ModelAttribute("allMaps")
+    public CSMap[] populateMaps() {
+        return CSMap.values();
+    }
+
 }

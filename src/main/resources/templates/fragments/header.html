@@ -1,4 +1,5 @@
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="headerFragment">
+    <script th:src="@{/js/maps.js}"></script>
     <header class="header">
         <h1>StratLeaf</h1>
 
@@ -19,5 +20,14 @@
                 </div>
             </div>
         </nav>
+
+        <select class="form-select-map" name="mapSelector" aria-label="Map selection">
+            <option th:each="map : ${T(com.Stratleaf.StratLeaf.CSMap).values()}"
+                    th:value="${map}"
+                    th:text="${map}"
+                    th:selected="${map == currentMap}">
+            </option>
+        </select>
+
     </header>
 </div>
