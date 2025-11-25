@@ -1,16 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const mapDropdown = document.querySelector(".form-select-map");
+    const mapDropdown = document.querySelector('select[name="mapSelector"]');
 
-        if (mapDropdown) {
-            mapDropdown.addEventListener('change', (event) => {
-                const selectedMap = event.target.value;
+    console.log(mapDropdown);
 
-                // Check if the user selected "All Maps" (empty value) or a specific map
-                if (selectedMap === "") {
-                    window.location.href = '/strats'; // Clear filter
-                } else {
-                    window.location.href = `/strats?mapSelector=${selectedMap}`;
-                }
-            });
-        }
+    if (mapDropdown) {
+        mapDropdown.addEventListener('change', (event) => {
+            const selectedMap = event.target.value;
+
+            console.log(selectedMap);
+
+            // Check if the user selected "All Maps" (empty value) or a specific map
+            window.location.href = `/strats?mapSelector=${selectedMap}`;
+
+        });
+    }
 });

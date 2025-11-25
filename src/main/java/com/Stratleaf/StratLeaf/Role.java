@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Setter
 @Getter
 @Entity
@@ -35,6 +37,10 @@ public class Role {
         this.strat = strat;
         this.player = player;
         this.roleDescription = roleDescription;
+    }
+
+    public boolean isEmpty() {
+        return Objects.equals(roleDescription, "");
     }
 
 }

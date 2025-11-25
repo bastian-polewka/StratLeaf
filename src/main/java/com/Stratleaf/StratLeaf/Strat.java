@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,8 +40,28 @@ public class Strat {
     // Default constructor (required by JPA)
     public Strat() {}
 
-    public Strat(String name) {
-        this.name = name;
+    public Strat(CSMap map) {
+        this.status = Status.NotReady;
+        this.side = Side.None;
+        this.map = map;
+        this.roles = new ArrayList<>();
+    }
+
+    private boolean isBlank(String s) {
+        return s == null || s.isBlank();
+    }
+
+    public boolean isEmpty() {
+        for (Role role : roles) {
+            if (!role.isEmpty()) {
+                return false;
+            }
+        }
+
+        return isBlank(type)
+                && isBlank(name)
+                && isBlank(description)
+                && isBlank(notes);
     }
 
     @Override

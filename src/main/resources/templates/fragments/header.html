@@ -1,5 +1,4 @@
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="headerFragment">
-    <script th:src="@{/js/maps.js}"></script>
     <header class="header">
         <h1>StratLeaf</h1>
 
@@ -25,9 +24,23 @@
             <option th:each="map : ${T(com.Stratleaf.StratLeaf.CSMap).values()}"
                     th:value="${map}"
                     th:text="${map}"
-                    th:selected="${map == currentMap}">
+                    th:selected="${map == selectedMap}">
             </option>
         </select>
+
+<!--        <select class="form-select" name="status" aria-label="Status selection" selected th:value="${strat.status}">-->
+<!--            <option value="Ready">Ready</option>-->
+<!--            <option value="NotReady">Not Ready</option>-->
+<!--            <option value="None">None</option>-->
+<!--        </select>-->
+
+<!--        <select class="form-select-map" name="mapSelector" aria-label="Map selection">-->
+<!--            <option th:each="map : ${T(com.Stratleaf.StratLeaf.CSMap).values()}"-->
+<!--                    th:value="${map}"-->
+<!--                    th:text="${map}"-->
+<!--                    th:selected="${map == currentMap}">-->
+<!--            </option>-->
+<!--        </select>-->
 
     </header>
 </div>

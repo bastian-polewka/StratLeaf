@@ -18,4 +18,13 @@ public class Player {
     private String name;
 
     private boolean active;
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", active='" + active + '\'' +
+                '}';
+    }
 }

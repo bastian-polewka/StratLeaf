@@ -1,4 +1,4 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="stratsTableFragment">
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="stratsTableFragment" class="strats-table" style="background-color: #212529;">
     <table class="table table-dark table-hover">
         <colgroup>
             <col style="width: 5%;">
@@ -12,51 +12,102 @@
             <col style="width: 5%;">
             <col style="width: 5%;">
             <col style="width: 5%;">
+            <col style="width: 5%;">
         </colgroup>
         <thead>
         <tr>
             <th>Type</th>
             <th>Name</th>
-            <td><input class="form-control" name="player" th:value="${ACTIVE_PLAYERS.size() > 0 ? ACTIVE_PLAYERS.get(0).name : 'N/A'}"></td>
-            <td><input class="form-control" name="player" th:value="${ACTIVE_PLAYERS.size() > 1 ? ACTIVE_PLAYERS.get(1).name : 'N/A'}"></td>
-            <td><input class="form-control" name="player" th:value="${ACTIVE_PLAYERS.size() > 2 ? ACTIVE_PLAYERS.get(2).name : 'N/A'}"></td>
-            <td><input class="form-control" name="player" th:value="${ACTIVE_PLAYERS.size() > 3 ? ACTIVE_PLAYERS.get(3).name : 'N/A'}"></td>
-            <td><input class="form-control" name="player" th:value="${ACTIVE_PLAYERS.size() > 4 ? ACTIVE_PLAYERS.get(4).name : 'N/A'}"></td>
+            <td><input class="form-control" name="player" th:value="${ACTIVE_PLAYERS.size() > 0 ? ACTIVE_PLAYERS.get(0).name : ''}"></td>
+            <td><input class="form-control" name="player" th:value="${ACTIVE_PLAYERS.size() > 1 ? ACTIVE_PLAYERS.get(1).name : ''}"></td>
+            <td><input class="form-control" name="player" th:value="${ACTIVE_PLAYERS.size() > 2 ? ACTIVE_PLAYERS.get(2).name : ''}"></td>
+            <td><input class="form-control" name="player" th:value="${ACTIVE_PLAYERS.size() > 3 ? ACTIVE_PLAYERS.get(3).name : ''}"></td>
+            <td><input class="form-control" name="player" th:value="${ACTIVE_PLAYERS.size() > 4 ? ACTIVE_PLAYERS.get(4).name : ''}"></td>
             <th>Description</th>
             <th>Notes</th>
             <th>Status</th>
             <th>Side</th>
+            <th></th>
         </tr>
         </thead>
 
         <tbody>
         <tr th:each="strat : ${STRATS}" th:data-strat-id="${strat.id}" class="editable-row">
 
-            <td><input class="form-control" name="type" th:value="${strat.type}"></td>
-            <td><input class="form-control" name="name" th:value="${strat.name}"></td>
+            <td><input class="form-control" name="type" th:value="${strat.type != null ? strat.type : ''}"></td>
 
-            <td th:each="player,iterStat : ${ACTIVE_PLAYERS}">
-                <input class="form-control" name="roleDescriptions"
-                       th:value="${#lists.isEmpty(strat.roles.?[player.id == player.id]) ?
-                        'N/A': strat.roles.?[player.id == player.id][0].roleDescription}"></td>
+            <td><input class="form-control" name="name" th:value="${strat.name != null ? strat.name : ''}"></td>
 
-            <td><input class="form-control" name="description" th:value="${strat.description}"></td>
-            <td><input class="form-control" name="notes" th:value="${strat.notes}"></td>
+
+
             <td>
-                <select class="form-select" name="status" aria-label="Status selection" selected th:value="${strat.status}">
-                    <option value="Ready">Ready</option>
-                    <option value="NotReady">Not Ready</option>
-                    <option value="None">None</option>
+                <input class="form-control"
+                       th:if="${ACTIVE_PLAYERS.size() > 0}"
+                       th:with="targetId=${ACTIVE_PLAYERS[0].id}"
+                       th:value="${strat.roles?.^[player.id == #root.targetId]?.roleDescription}"
+                       name="roleDescription">
+            </td>
+
+            <td>
+                <input class="form-control"
+                       th:if="${ACTIVE_PLAYERS.size() > 1}"
+                       th:with="targetId=${ACTIVE_PLAYERS[1].id}"
+                       th:value="${strat.roles?.^[player.id == #root.targetId]?.roleDescription}"
+                       name="roleDescription">
+            </td>
+
+            <td>
+                <input class="form-control"
+                       th:if="${ACTIVE_PLAYERS.size() > 2}"
+                       th:with="targetId=${ACTIVE_PLAYERS[2].id}"
+                       th:value="${strat.roles?.^[player.id == #root.targetId]?.roleDescription}"
+                       name="roleDescription">
+            </td>
+
+            <td>
+                <input class="form-control"
+                       th:if="${ACTIVE_PLAYERS.size() > 3}"
+                       th:with="targetId=${ACTIVE_PLAYERS[3].id}"
+                       th:value="${strat.roles?.^[player.id == #root.targetId]?.roleDescription}"
+                       name="roleDescription">
+            </td>
+
+            <td>
+                <input class="form-control"
+                       th:if="${ACTIVE_PLAYERS.size() > 4}"
+                       th:with="targetId=${ACTIVE_PLAYERS[4].id}"
+                       th:value="${strat.roles?.^[player.id == #root.targetId]?.roleDescription}"
+                       name="roleDescription">
+            </td>
+
+            <td><input class="form-control" name="description" th:value="${strat.description != null ? strat.description : ''}"></td>
+            <td><input class="form-control" name="notes" th:value="${strat.notes != null ? strat.notes : ''}"></td>
+
+            <td>
+                <select class="form-select" name="status" aria-label="Status selection">
+                    <option value="Ready"    th:selected="${strat.status.name() == 'Ready'}">Ready</option>
+                    <option value="NotReady" th:selected="${strat.status.name() == 'NotReady'}">Not Ready</option>
+                    <option value="None"     th:selected="${strat.status.name() == 'None'}">None</option>
                 </select>
             </td>
             <td>
-                <select class="form-select" name="side" aria-label="Side selection" selected th:value="${strat.side}">
-                    <option value="CT">CT</option>
-                    <option value="T">T</option>
-                    <option value="None">None</option>
+                <select class="form-select" name="side" aria-label="Side selection">
+                    <option value="CT"   th:selected="${strat.side.name() == 'CT'}">CT</option>
+                    <option value="T"    th:selected="${strat.side.name() == 'T'}">T</option>
+                    <option value="None" th:selected="${strat.side.name() == 'None'}">None</option>
                 </select>
             </td>
+
+            <td>
+                <button id="deleterButton" type="button" class="btn btn-danger" name="deleterButton">x</button>
+<!--                <tbody hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s">-->
+<!--                ...-->
+<!--                </tbody>-->
+            </td>
+
         </tr>
+
+
         <!--
 
 

@@ -1,6 +1,40 @@
 document.addEventListener('DOMContentLoaded', () => {
     const editableInputs = document.querySelectorAll('.editable-row');
 
+    document.getElementById("deleterButton").addEventListener("click", e => {
+        const row = e.target.closest("tr");
+        const stratId = row.dataset.stratId;
+        const mapDropdown = document.querySelector('select[name="mapSelector"]');
+        const selectedMap = mapDropdown.value;
+
+        const data = {
+            id: stratId,
+            map: selectedMap
+        };
+
+        fetch('/delete-strat', {
+            method: 'POST', // maybe change to PUT
+            headers: {
+                'Content-Type': 'application/json',
+                // Add CSRF token header here if your framework requires it (e.g., Spring Security)
+            },
+            body: JSON.stringify(stratId)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            // TODO: If successful, you might update the row visually (e.g., flash a green color)
+            console.log(`Deletion successful for ID: ${stratId}`);
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Deletion failed:', error);
+            // TODO: Handle error (e.g., revert the input value or show a message)
+        });
+    });
+
+
     editableInputs.forEach(input => {
         input.addEventListener('change', (event) => {
             const changedInput = event.target;
@@ -37,9 +71,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     active: true
                 }));
 
-            const roleDescriptions = Array.from(row.querySelectorAll('input[name="roleDescriptions"]'))
+            const roleDescriptions = Array.from(row.querySelectorAll('input[name="roleDescription"]'))
                 .map(nameInput => nameInput.value);
 
+            const mapDropdown = document.querySelector('select[name="mapSelector"]');
+            const selectedMap = mapDropdown.value;
 
             // 2. Package the data for submission (only the ID and the changed field)
             const data = {
@@ -51,12 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 status: stratData.status,
                 side: stratData.side,
                 players: players,
-                roleDescriptions: roleDescriptions
+                roleDescriptions: roleDescriptions,
+                map: selectedMap
                 //[changedInput.name]: changedInput.value
             };
 
-            console.log(`Sending AJAX update for ID: ${stratId}. Field: ${changedInput.name}`);
 
+            console.log(`Sending AJAX update for ID: ${stratId}. Field: ${changedInput.name}`);
             console.log(data);
 
             // 3. Use the Fetch API to send the data asynchronously
@@ -74,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 // TODO: If successful, you might update the row visually (e.g., flash a green color)
                 console.log(`Update successful for ID: ${stratId}`);
+                window.location.reload();
             })
             .catch(error => {
                 console.error('Update failed:', error);
