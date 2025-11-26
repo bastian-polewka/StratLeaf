@@ -1,36 +1,40 @@
 document.addEventListener('DOMContentLoaded', () => {
     const editableInputs = document.querySelectorAll('.editable-row');
 
-    document.getElementById("deleterButton").addEventListener("click", e => {
-        const row = e.target.closest("tr");
-        const stratId = row.dataset.stratId;
-        const mapDropdown = document.querySelector('select[name="mapSelector"]');
-        const selectedMap = mapDropdown.value;
+    const deleteButtons = document.querySelectorAll('button[name="deleterButton"]');
 
-        const data = {
-            id: stratId,
-            map: selectedMap
-        };
+    deleteButtons.forEach(button => {
+        button.addEventListener("click", e => {
+            const row = e.target.closest("tr");
+            const stratId = row.dataset.stratId;
+            const mapDropdown = document.querySelector('select[name="mapSelector"]');
+            const selectedMap = mapDropdown.value;
 
-        fetch('/delete-strat', {
-            method: 'POST', // maybe change to PUT
-            headers: {
-                'Content-Type': 'application/json',
-                // Add CSRF token header here if your framework requires it (e.g., Spring Security)
-            },
-            body: JSON.stringify(stratId)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            // TODO: If successful, you might update the row visually (e.g., flash a green color)
-            console.log(`Deletion successful for ID: ${stratId}`);
-            window.location.reload();
-        })
-        .catch(error => {
-            console.error('Deletion failed:', error);
-            // TODO: Handle error (e.g., revert the input value or show a message)
+            const data = {
+                id: stratId,
+                map: selectedMap
+            };
+
+            fetch('/delete-strat', {
+                method: 'POST', // maybe change to PUT
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add CSRF token header here if your framework requires it (e.g., Spring Security)
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                // TODO: If successful, you might update the row visually (e.g., flash a green color)
+                console.log(`Deletion successful for ID: ${stratId}`);
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('Deletion failed:', error);
+                // TODO: Handle error (e.g., revert the input value or show a message)
+            });
         });
     });
 

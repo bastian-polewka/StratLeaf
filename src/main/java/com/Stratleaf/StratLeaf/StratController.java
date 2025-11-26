@@ -19,6 +19,14 @@ public class StratController {
     @Autowired
     private RoleRepository roleRepository;
 
+    private final StratService stratService;
+
+    @Autowired
+    public StratController(StratService stratService, StratRepository stratRepository) {
+        this.stratService = stratService;
+        this.stratRepository = stratRepository;
+    }
+
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("pageTitle", "StratLeaf");
@@ -42,14 +50,9 @@ public class StratController {
 
         List<Strat> strats = stratRepository.findByMap(selectedMap);
 
-        System.out.println("HERE MAP: " + selectedMap);
-        System.out.println("HERE STRAT: " + strats);
-
         if (strats.isEmpty()) {
             Strat strat = new Strat(selectedMap);
             stratRepository.save(strat);
-            strats = stratRepository.findByMap(selectedMap);
-
         }
         else {
             checkNewEmptyStrat(selectedMap);
@@ -85,11 +88,7 @@ public class StratController {
         List<String> roles = request.getRoleDescriptions();
 
 
-        System.out.println("ROLES" + roles);
-
         addPlayerAndRole(resolvedPlayers, players, roles, strat);
-
-
 
         stratRepository.save(strat);
 
@@ -102,11 +101,7 @@ public class StratController {
     @PostMapping("/delete-strat")
     @ResponseBody
     public ResponseEntity<Void> removeStrat(@RequestBody StratUpdateRequest request) {
-
-        Strat strat = stratRepository.findById(request.getId())
-                .orElseThrow(() -> new RuntimeException("Strat not found"));
-
-        stratRepository.delete(strat);
+        stratService.deleteStratAndAssociatedRoles(request.getId());
 
         boolean check = checkNewEmptyStrat(request.getMap());
 
@@ -166,16 +161,11 @@ public class StratController {
         }
         else {
             if (!strats.getLast().isEmpty()) {
-
                 Strat strat = new Strat(selectedMap);
                 stratRepository.save(strat);
-                System.out.println("NEW LINE ADDED");
-
                 return false;
-
             }
             else {
-                System.out.println("NO NEW LINE IS ADDED");
                 return true;
             }
         }
